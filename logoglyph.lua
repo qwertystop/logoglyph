@@ -166,8 +166,8 @@ end
 -- Other shape is optional.
 -- centerodds required, certain shapes use it
 function randShape(centerodds, othershape)
-	shapes = {Circle, Line, RegPolygon}
-	base = shapes[math.random(3)]:new()
+	local shapes = {Circle, Line, RegPolygon}
+	local base = shapes[math.random(3)]:new()
 	table.insert(base.transforms,
 			base:getanchortransform(centerodds))
 	if othershape then
