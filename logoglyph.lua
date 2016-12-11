@@ -73,6 +73,10 @@ function Circle.getanchortransform(centerodds)
 	end
 end
 
+function Circle:writeShapeSVG()
+	-- TODO
+end
+
 -------
 -- Line
 -- Primitive: (0, 0) to (1, 0)
@@ -207,11 +211,16 @@ function writeSceneSVG(source, target)
 		io.output(io.stdout)
 	end
 	-- boilerplate start
-	io.write('<svg version="1.1" width="400" height="400"'
-			.. 'viewBox="-200 -200 400 400"'
-			.. 'preserveAspectRatio="meet">')
+	-- TODO upscale all bases back at top
+	io.write('<svg version="1.1" width="1000" height="1000"',
+		 '       viewBox="-500 -500 1000 1000"',
+		 '       preserveAspectRatio="meet">', '\n',
+		 '  <defs> \n',
+		 '    <circle id="BaseCircle" cx="0" cy="0" r="100"',
+		 '          fill="none" stroke="black" stroke-width="10" />')
+		 -- TODO other base shapes
 	-- write all shapes, depth-first through the tree, from the root
-	source:writeShapeSVG() -- TODO implement for all shapes
+	source:writeShapeSVG() -- TODO implement function for all shapes
 	io.write('</svg>')
 end
 
