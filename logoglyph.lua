@@ -177,13 +177,42 @@ function randShape(centerodds, othershape)
 	end
 end
 
--- Create a full scenegraph.
+-- Create a full scenegraph (returns root).
 -- Pass a table containing configuration:
 -- 'more' = odds of adding another shape, (n / 1)
 -- 'centerodds' (see randShape)
 -- and all parameters to randTransform (weights, continue, translatemax, rotatemax)
 function makeScenegraph(config)
-	return nil -- TODO
+	-- Minimum two shapes
+	local shapes = {}
+	table.insert(shapes, randShape(config.centerodds))
+	repeat
+		-- Add transforms to last shape
+		table.insert(shapes[#shapes]:getTransforms(),
+				randTransform(config.weights, config.continue,
+						config.translatemax, config.rotatemax))
+		-- Pick a shape from the list to make the parent of the new shape
+		local parent = shapes[math.random(#shapes)]
+		table.insert(shapes, randShape(config.centerodds, parent))
+		-- repeat
+	until math.random() < more
+	return shapes[1] -- returning root of scene, not the whole list
+end
+
+-- Write the SVG of scenegraph "source" into file named "target"
+function writeSceneSVG(source, target)
+	if target then
+		io.output(io.open(target, 'w'))
+	else
+		io.output(io.stdout)
+	end
+	-- boilerplate start
+	io.write('<svg version="1.1" width="400" height="400"'
+			.. 'viewBox="-200 -200 400 400"'
+			.. 'preserveAspectRatio="meet">')
+	-- write all shapes, depth-first through the tree, from the root
+	source:writeShapeSVG() -- TODO implement for all shapes
+	io.write('</svg>')
 end
 
 ---------------
