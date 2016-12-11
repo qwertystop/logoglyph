@@ -54,8 +54,8 @@ SkewY.newRand = randAngleInit
 -- No ellipse primitive - emergent, just unevenly scale a circle.
 -------
 Circle = simpleclass({params = {cx = 0, cy = 0, r = 1},
-		transforms = autoinit "transforms",
-		children = autoinit "children"},
+		getTransforms = lazyInit "getTransforms",
+		getChildren = lazyInit "getChildren"},
 		"RegPolygon")
 
 
@@ -78,8 +78,8 @@ end
 -- Primitive: (0, 0) to (1, 0)
 -------
 Line = simpleclass({params = {x1 = 0, y1 = 0; x2 = 1, y2 = 0},
-		transforms = autoinit "transforms",
-		children = autoinit "children"},
+		getTransforms = lazyInit "getTransforms",
+		getChildren = lazyInit "getChildren"},
 		"RegPolygon")
 
 -- Selects a random point on the line
@@ -96,8 +96,8 @@ end
 -- TODO extend to all-points-on-shape? Maybe, maybe not.
 -------
 RegPolygon = simpleclass({params = {sides = sides, x = 0, y = 0},
-		transforms = autoinit "transforms",
-		children = autoinit "children"},
+		transforms = lazyInit "getTransforms",
+		children = lazyInit "getChildren"},
 		"RegPolygon")
 
 -- Selects a random corner of the shape, or the center
@@ -168,12 +168,12 @@ end
 function randShape(centerodds, othershape)
 	local shapes = {Circle, Line, RegPolygon}
 	local base = shapes[math.random(3)]:new()
-	table.insert(base.transforms,
+	table.insert(base:getTransforms(),
 			base:getanchortransform(centerodds))
 	if othershape then
-		table.insert(base.transforms,
+		table.insert(base:getTransforms(),
 			othershape:getanchortransform(centerodds))
-		table.insert(othershape.children)
+		table.insert(othershape:getChildren())
 	end
 end
 
@@ -200,8 +200,8 @@ function simpleclass(class, typename)
 	return class
 end
 
--- Automatic initializer
-function autoinit(paramname)
+-- Lazy initializer for empty-table fields
+function lazyInit(paramname)
 	return function(self)
 		local _t = {} -- auto-initialize to new empty table
 		self[paramname] = function(self) return _t end
