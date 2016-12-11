@@ -54,7 +54,9 @@ SkewY.newRand = randAngleInit
 -- No ellipse primitive - emergent, just unevenly scale a circle.
 -------
 Circle = simpleclass({params = {cx = 0, cy = 0, r = 1},
-			transforms = {}, children = {}}, "Circle")
+		transforms = autoinit "transforms",
+		children = autoinit "children"},
+		"RegPolygon")
 
 
 -- Selects a point from center or any point on edge
@@ -76,7 +78,9 @@ end
 -- Primitive: (0, 0) to (1, 0)
 -------
 Line = simpleclass({params = {x1 = 0, y1 = 0; x2 = 1, y2 = 0},
-		transforms = {}, children = {}}, "Line")
+		transforms = autoinit "transforms",
+		children = autoinit "children"},
+		"RegPolygon")
 
 -- Selects a random point on the line
 -- Since everything is a transform from (1, 0), this is simple.
@@ -92,7 +96,9 @@ end
 -- Actually a class-factory - input side number, get class for that many sides
 -------
 RegPolygon = simpleclass({params = {sides = sides, x = 0, y = 0},
-		transforms = {}, children = {}}, "RegPolygon")
+		transforms = autoinit "transforms",
+		children = autoinit "children"},
+		"RegPolygon")
 
 -- Selects a random corner of the shape, or the center
 -- Equal chance of all corners, 1/centerodds chance of center
@@ -168,6 +174,15 @@ function simpleclass(class, typename)
 	class.is_a = function(self, askname) return self.name == askname end
 	class.new = function(self, obj) return setmetatable(obj, class) end
 	return class
+end
+
+-- Automatic initializer
+function autoinit(paramname)
+	return function(self)
+		local _t = {} -- auto-initialize to new empty table
+		self[paramname] = function(self) return _t end
+		return _t
+	end
 end
 
 function sum(tab)
