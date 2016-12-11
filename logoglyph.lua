@@ -10,17 +10,6 @@ local matrix = require "matrix"
 -- Reset RNG
 math.randomseed(os.time())
 
--- Simple classmaking function, set up index and meta
--- Does not provide for inheritance
--- Does provide for (extremely simplified) type-checking
-function simpleclass(class, typename)
-	class.__index = class
-	class.name = typename
-	class.is_a = function(self, askname) return self.name == askname end
-	class.new = function(self, obj) return setmetatable(obj, class) end
-	return class
-end
-
 ---------------
 -- Classes for different transforms
 ---------------
@@ -170,6 +159,17 @@ end
 ---------------
 -- Utilities
 ---------------
+-- Simple classmaking function, set up index and meta
+-- Does not provide for inheritance
+-- Does provide for (extremely simplified) type-checking
+function simpleclass(class, typename)
+	class.__index = class
+	class.name = typename
+	class.is_a = function(self, askname) return self.name == askname end
+	class.new = function(self, obj) return setmetatable(obj, class) end
+	return class
+end
+
 function sum(tab)
 	local _sum = 0
 	for key, val in pairs(tab) do
