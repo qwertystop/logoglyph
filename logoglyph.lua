@@ -177,6 +177,15 @@ function randShape(centerodds, othershape)
 	end
 end
 
+-- Create a full scenegraph.
+-- Pass a table containing configuration:
+-- 'more' = odds of adding another shape, (n / 1)
+-- 'centerodds' (see randShape)
+-- and all parameters to randTransform (weights, continue, translatemax, rotatemax)
+function makeScenegraph(config)
+	return nil -- TODO
+end
+
 ---------------
 -- Utilities
 ---------------
