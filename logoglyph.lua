@@ -162,6 +162,24 @@ function randTransform(weights, continue, params)
 	return transformList
 end
 
+-- Create a random shape,
+-- with a random anchor on the new shape matched to
+-- a random anchor on the given other shape
+-- and make the new shape a child of the other.
+-- Other shape is optional.
+-- centerodds required, certain shapes use it
+function randShape(centerodds, othershape)
+	shapes = {Circle, Line, RegPolygon}
+	base = shapes[math.random(3)]:new()
+	table.insert(base.transforms,
+			base:getanchortransform(centerodds))
+	if othershape then
+		table.insert(base.transforms,
+			othershape:getanchortransform(centerodds))
+		table.insert(othershape.children)
+	end
+end
+
 ---------------
 -- Utilities
 ---------------
