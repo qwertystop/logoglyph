@@ -10,10 +10,14 @@ local matrix = require "matrix"
 -- Reset RNG
 math.randomseed(os.time())
 
--- Simple class function, set up index and meta
-function simpleclass(class)
+-- Simple classmaking function, set up index and meta
+-- Does not provide for inheritance
+-- Does provide for (extremely simplified) type-checking
+function simpleclass(class, typename)
 	class.__index = class
-	class.new = function (self, obj) return setmetatable(obj, class) end
+	class.name = typename
+	class.is_a = function(self, askname) return self.name == askname end
+	class.new = function(self, obj) return setmetatable(obj, class) end
 	return class
 end
 
@@ -30,19 +34,19 @@ function twoRandInit(self, magnitude)
 			y = math.random() * 2 * magnitude - magnitude}
 end
 
-Translate = simpleclass{x = 0, y = 0}
+Translate = simpleclass({x = 0, y = 0}, "Translate")
 Translate.newRand = twoRandInit
 
-Scale = simpleclass{x = 0, y = 0}
+Scale = simpleclass({x = 0, y = 0}, "Scale")
 Scale.newRand = twoRandInit
 
-Rotate = simpleclass{ang = 0} -- remember SVG uses degrees but Lua uses radians
+Rotate = simpleclass({ang = 0}, "Rotate") -- remember SVG uses degrees but Lua uses radians
 Rotate.newRand = randAngleInit
 
-SkewX = simpleclass{ang = 0}
+SkewX = simpleclass({ang = 0}, "SkewX")
 SkewX.newRand = randAngleInit
 
-SkewY = simpleclass{ang = 0}
+SkewY = simpleclass({ang = 0}, "SkewY")
 SkewY.newRand = randAngleInit
 
 ---------------
@@ -60,9 +64,8 @@ SkewY.newRand = randAngleInit
 -- Primitive: Center at origin, radius 1.
 -- No ellipse primitive - emergent, just unevenly scale a circle.
 -------
-Circle = simpleclass{params = {cx = 0, cy = 0, r = 1},
-			transforms = {},
-			children = {}}
+Circle = simpleclass({params = {cx = 0, cy = 0, r = 1},
+			transforms = {}, children = {}}, "Circle")
 
 
 -- Selects a point from center or any point on edge
@@ -83,9 +86,8 @@ end
 -- Line
 -- Primitive: (0, 0) to (1, 0)
 -------
-Line = simpleclass{params = {x1 = 0, y1 = 0; x2 = 1, y2 = 0},
-		transforms = {},
-		children = {}}
+Line = simpleclass({params = {x1 = 0, y1 = 0; x2 = 1, y2 = 0},
+		transforms = {}, children = {}}, "Line")
 
 -- Selects a random point on the line
 -- Since everything is a transform from (1, 0), this is simple.
@@ -100,9 +102,8 @@ end
 -- TODO extend to all-points-on-shape
 -- Actually a class-factory - input side number, get class for that many sides
 -------
-RegPolygon = simpleclass{params = {sides = sides, x = 0, y = 0},
-		transforms = {},
-		children = {}}
+RegPolygon = simpleclass({params = {sides = sides, x = 0, y = 0},
+		transforms = {}, children = {}}, "RegPolygon")
 
 -- Selects a random corner of the shape, or the center
 -- Equal chance of all corners, 1/centerodds chance of center
