@@ -20,12 +20,30 @@ end
 ---------------
 -- Classes for different transforms
 ---------------
-Translate = simpleclass{dx = 0, dy = nil}
-Scale = simpleclass{sx = 0, sy = nil}
-Rotate = simpleclass{ang = 0} -- remember SVG uses degrees but Lua uses radians
-SkewX = simpleclass{ang = 0}
-SkewY = simpleclass{ang = 0}
+-- Random initializers are common to multiple transforms
+function randAngleInit(self)
+	return self:new{ang = math.random() * 2 * math.pi}
+end
 
+function twoRandInit(self, magnitude)
+	return self:new{x = math.random() * 2 * magnitude - magnitude,
+			y = math.random() * 2 * magnitude - magnitude}
+end
+
+Translate = simpleclass{x = 0, y = 0}
+Translate.newRand = twoRandInit
+
+Scale = simpleclass{x = 0, y = 0}
+Scale.newRand = twoRandInit
+
+Rotate = simpleclass{ang = 0} -- remember SVG uses degrees but Lua uses radians
+Rotate.newRand = randAngleInit
+
+SkewX = simpleclass{ang = 0}
+SkewX.newRand = randAngleInit
+
+SkewY = simpleclass{ang = 0}
+SkewY.newRand = randAngleInit
 
 ---------------
 -- Classes for primitive shapes
@@ -43,7 +61,8 @@ SkewY = simpleclass{ang = 0}
 -- No ellipse primitive - emergent, just unevenly scale a circle.
 -------
 Circle = simpleclass{params = {cx = 0, cy = 0, r = 1},
-			transforms = {}}
+			transforms = {},
+			children = {}}
 
 
 -- Selects a point from center or any point on edge
@@ -56,7 +75,7 @@ function Circle.getanchortransform(centerodds)
 		return Translate:new(0, 0)
 	else
 		local angle = math.random() * math.pi * 2
-		return Translate:new{dx = math.cos(angle), dy = math.sin(angle)}
+		return Translate:new{x = math.cos(angle), y = math.sin(angle)}
 	end
 end
 
@@ -65,12 +84,13 @@ end
 -- Primitive: (0, 0) to (1, 0)
 -------
 Line = simpleclass{params = {x1 = 0, y1 = 0; x2 = 1, y2 = 0},
-		transforms = {}}
+		transforms = {},
+		children = {}}
 
 -- Selects a random point on the line
 -- Since everything is a transform from (1, 0), this is simple.
 function Line.getanchortransform()
-	return Translate:new{dx = math.random(), dy = 0}
+	return Translate:new{x = math.random(), y = 0}
 end
 
 -------
@@ -81,7 +101,8 @@ end
 -- Actually a class-factory - input side number, get class for that many sides
 -------
 RegPolygon = simpleclass{params = {sides = sides, x = 0, y = 0},
-		transforms = {}}
+		transforms = {},
+		children = {}}
 
 -- Selects a random corner of the shape, or the center
 -- Equal chance of all corners, 1/centerodds chance of center
@@ -92,7 +113,7 @@ function RegPolygon:getanchortransform(centerodds)
 	else
 		local angle = ((math.pi * 2) 
 			/ (math.random(self.params.sides) / self.params.sides))
-		return Translate:new{dx = math.cos(angle), dy = math.cos(angle)}
+		return Translate:new{x = math.cos(angle), y = math.cos(angle)}
 	end
 end
 -------
@@ -102,3 +123,17 @@ end
 -- Anchor at corner or end
 -- Random angle, random length within bounds
 -------
+
+
+---------------
+-- Scene generation
+---------------
+-- Select a random shape with random transform
+-- Weights provided by argument - odds of any given transform (n / sum),
+-- likelihood of continuing (n / 1)
+function randTransform(weights, continue)
+	local transformList = {}
+	while math.random() < continue do
+		-- TODO
+	end
+end
