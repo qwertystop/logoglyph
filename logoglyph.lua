@@ -127,12 +127,9 @@ end
 -- Create a random chain of transforms
 -- Weights provided by argument
 -- odds of any given transform (n / sum, must be ints),
--- likelihood of continuing (n / 1)
+-- continue: likelihood of continuing (n / 1)
 -- weights = {translate = n1, scale = n2, rotate = n3, skewx = n4, skewy = n5}
--- params = {translatemax = m1, scalemax = m2}
-function randTransform(weights, continue, params)
-	local translatemax = params.translatemax or 10
-	local scalemax = params.scalemax or 10
+function randTransform(weights, continue, translatemax, scalemax)
 	local funList = {}
 	for i = 1, weights.translate do
 		table.insert(funList, partial(
