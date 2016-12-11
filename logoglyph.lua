@@ -129,11 +129,56 @@ end
 -- Scene generation
 ---------------
 -- Select a random shape with random transform
--- Weights provided by argument - odds of any given transform (n / sum),
+-- Weights provided by argument
+-- odds of any given transform (n / sum, must be ints),
 -- likelihood of continuing (n / 1)
-function randTransform(weights, continue)
+-- weights = {translate = n1, scale = n2, rotate = n3, skewx = n4, skewy = n5}
+-- params = {translatemax = m1, scalemax = m2}
+function randTransform(weights, continue, params)
+	local translatemax = params.translatemax or 10
+	local scalemax = params.scalemax or 10
+	local funList = {}
+	for i = 1, weights.translate do
+		table.insert(funList, partial(
+				partial(Translate.newRand, Translate),
+				translatemax))
+	end
+	for i = 1, weights.scale do
+		table.insert(funList, partial(
+				partial(Scale.newRand, Scale),
+				scalemax))
+	end
+	for key, val in pairs{rotate = Rotate, skewx = SkewX, skewy = SkewY} do
+		for i = 1, weights[key] do
+			table.insert(funList, partial(val.newRand, val))
+		end
+	end
+
+	local weightsum = sum(weights)
+	assert(#funList == weightsum, "list " .. #funList .. " sum " .. weightsum)
+
 	local transformList = {}
 	while math.random() < continue do
-		-- TODO
+		local selection = math.random(weightsum)
+		local item = nil
+		table.insert(transformList, funList[selection]())
+	end
+	return transformList
+end
+
+---------------
+-- Utilities
+---------------
+function sum(tab)
+	local _sum = 0
+	for key, val in pairs(tab) do
+		_sum = _sum + val
+	end
+	return _sum
+end
+
+function partial(f, arg)
+	return function(...)
+		return f(arg, ...)
 	end
 end
