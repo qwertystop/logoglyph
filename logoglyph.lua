@@ -84,7 +84,8 @@ Line = simpleclass({params = {x1 = 0, y1 = 0; x2 = 1, y2 = 0},
 
 -- Selects a random point on the line
 -- Since everything is a transform from (1, 0), this is simple.
-function Line.getanchortransform()
+-- Consumes one argument to keep a consistent interface, ignores it.
+function Line.getanchortransform(_)
 	return Translate:new{x = math.random(), y = 0}
 end
 
@@ -92,8 +93,7 @@ end
 -- RegPolygon
 -- Points on a radius-1 circle
 -- Anchors: Corners or center
--- TODO extend to all-points-on-shape
--- Actually a class-factory - input side number, get class for that many sides
+-- TODO extend to all-points-on-shape? Maybe, maybe not.
 -------
 RegPolygon = simpleclass({params = {sides = sides, x = 0, y = 0},
 		transforms = autoinit "transforms",
@@ -124,7 +124,7 @@ end
 ---------------
 -- Scene generation
 ---------------
--- Select a random shape with random transform
+-- Create a random chain of transforms
 -- Weights provided by argument
 -- odds of any given transform (n / sum, must be ints),
 -- likelihood of continuing (n / 1)
