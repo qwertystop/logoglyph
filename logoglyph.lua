@@ -288,8 +288,9 @@ local function randShape(centerodds, othershape)
 	if othershape then
 		table.insert(base:getTransforms(),
 			othershape:getanchortransform(centerodds))
-		table.insert(othershape:getChildren())
+		table.insert(othershape:getChildren(), base)
 	end
+	return base
 end
 
 -- Create a full scenegraph (returns root).
