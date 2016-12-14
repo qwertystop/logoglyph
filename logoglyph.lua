@@ -11,6 +11,43 @@ local lfs = require "lfs" -- luafilesystem
 local argparse = require "argparse"
 
 ---------------
+-- Utilities
+---------------
+-- Simple classmaking function, set up index and meta
+-- Does not provide for inheritance
+-- Does provide for (extremely simplified) type-checking
+local function simpleclass(class, typename)
+	class.__index = class
+	class.name = typename
+	class.is_a = function(self, askname) return self.name == askname end
+	class.new = function(self, obj) return setmetatable(obj, class) end
+	return class
+end
+
+-- Lazy initializer for empty-table fields
+local function lazyInit(paramname)
+	return function(self)
+		local _t = {} -- auto-initialize to new empty table
+		self[paramname] = function(self) return _t end
+		return _t
+	end
+end
+
+local function sum(tab)
+	local _sum = 0
+	for key, val in pairs(tab) do
+		_sum = _sum + val
+	end
+	return _sum
+end
+
+local function partial(f, arg)
+	return function(...)
+		return f(arg, ...)
+	end
+end
+
+---------------
 -- Arguments
 ---------------
 local parser = argparse()
@@ -318,43 +355,6 @@ function writeSceneSVG(source, target)
 	-- write all shapes, depth-first through the tree, from the root
 	writeObjectSVG(source)
 	io.write('</svg>')
-end
-
----------------
--- Utilities
----------------
--- Simple classmaking function, set up index and meta
--- Does not provide for inheritance
--- Does provide for (extremely simplified) type-checking
-function simpleclass(class, typename)
-	class.__index = class
-	class.name = typename
-	class.is_a = function(self, askname) return self.name == askname end
-	class.new = function(self, obj) return setmetatable(obj, class) end
-	return class
-end
-
--- Lazy initializer for empty-table fields
-function lazyInit(paramname)
-	return function(self)
-		local _t = {} -- auto-initialize to new empty table
-		self[paramname] = function(self) return _t end
-		return _t
-	end
-end
-
-function sum(tab)
-	local _sum = 0
-	for key, val in pairs(tab) do
-		_sum = _sum + val
-	end
-	return _sum
-end
-
-function partial(f, arg)
-	return function(...)
-		return f(arg, ...)
-	end
 end
 
 -----------------
