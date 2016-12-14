@@ -97,40 +97,40 @@ parser:option "-o --output"
 -- Classes for different transforms
 ---------------
 -- Random initializers are common to multiple transforms
-function randAngleInit(self)
+local function randAngleInit(self)
 	return self:new{ang = math.random() * 2 * math.pi}
 end
 
-function twoRandInit(self, magnitude)
+local function twoRandInit(self, magnitude)
 	return self:new{x = math.random() * 2 * magnitude - magnitude,
 			y = math.random() * 2 * magnitude - magnitude}
 end
 
-Translate = simpleclass({x = 0, y = 0}, "Translate")
+local Translate = simpleclass({x = 0, y = 0}, "Translate")
 Translate.newRand = twoRandInit
 function Translate:asSVGAttribute()
 	return ('transform="translate(' .. self.x .. ',' .. self.y .. ')"')
 end
 
-Scale = simpleclass({x = 0, y = 0}, "Scale")
+local Scale = simpleclass({x = 0, y = 0}, "Scale")
 Scale.newRand = twoRandInit
 function Scale:asSVGAttribute()
 	return ('transform="scale(' .. self.x .. ',' .. self.y .. ')"')
 end
 
-Rotate = simpleclass({ang = 0}, "Rotate") -- remember SVG uses degrees but Lua uses radians
+local Rotate = simpleclass({ang = 0}, "Rotate") -- remember SVG uses degrees but Lua uses radians
 Rotate.newRand = randAngleInit
 function Rotate:asSVGAttribute()
 	return ('transform="rotate(' .. self.ang .. ')"')
 end
 
-SkewX = simpleclass({ang = 0}, "SkewX")
+local SkewX = simpleclass({ang = 0}, "SkewX")
 SkewX.newRand = randAngleInit
 function SkewX:asSVGAttribute()
 	return ('transform="skewX(' .. self.ang .. ')"')
 end
 
-SkewY = simpleclass({ang = 0}, "SkewY")
+local SkewY = simpleclass({ang = 0}, "SkewY")
 SkewY.newRand = randAngleInit
 function SkewY:asSVGAttribute()
 	return ('transform="skewY(' .. self.ang .. ')"')
@@ -151,7 +151,7 @@ end
 -- Primitive: Center at origin, radius 100.
 -- No ellipse primitive - emergent, just unevenly scale a circle.
 -------
-Circle = simpleclass({params = {cx = 0, cy = 0, r = 100},
+local Circle = simpleclass({params = {cx = 0, cy = 0, r = 100},
 		getTransforms = lazyInit "getTransforms",
 		getChildren = lazyInit "getChildren"},
 		"RegPolygon")
@@ -178,7 +178,7 @@ end
 -- Line
 -- Primitive: (0, 0) to (100, 0)
 -------
-Line = simpleclass({params = {x1 = 0, y1 = 0; x2 = 100, y2 = 0},
+local Line = simpleclass({params = {x1 = 0, y1 = 0; x2 = 100, y2 = 0},
 		getTransforms = lazyInit "getTransforms",
 		getChildren = lazyInit "getChildren"},
 		"RegPolygon")
@@ -200,7 +200,7 @@ end
 -- Anchors: Corners or center
 -- TODO extend to all-points-on-shape? Maybe, maybe not.
 -------
-RegPolygon = simpleclass({params = {sides = sides, x = 0, y = 0},
+local RegPolygon = simpleclass({params = {sides = sides, x = 0, y = 0},
 		transforms = lazyInit "getTransforms",
 		children = lazyInit "getChildren"},
 		"RegPolygon")
@@ -245,7 +245,7 @@ end
 -- odds of any given transform (n / sum, must be ints),
 -- continue: likelihood of continuing (n / 1)
 -- weights = {translate = n1, scale = n2, rotate = n3, skewx = n4, skewy = n5}
-function randTransform(weights, continue, translatemax, scalemax)
+local function randTransform(weights, continue, translatemax, scalemax)
 	local funList = {}
 	for i = 1, weights.translate do
 		table.insert(funList, partial(
@@ -281,7 +281,7 @@ end
 -- and make the new shape a child of the other.
 -- Other shape is optional.
 -- centerodds required, certain shapes use it
-function randShape(centerodds, othershape)
+local function randShape(centerodds, othershape)
 	local shapes = {Circle, Line, RegPolygon}
 	local base = shapes[math.random(3)]:new()
 	table.insert(base:getTransforms(),
@@ -299,7 +299,7 @@ end
 -- 'moreshapes' = odds of adding another shape, (n / 1)
 -- 'centerodds' (see randShape)
 -- and all parameters to randTransform (weights, continue, translatemax, scaleemax)
-function makeScenegraph(config)
+local function makeScenegraph(config)
 	-- Minimum two shapes
 	local shapes = {}
 	table.insert(shapes, randShape(config.centerodds))
@@ -318,7 +318,7 @@ end
 
 -- Write an individual object as SVG - this function handles the generic parts
 -- (groups, transforms, children)
-function writeObjectSVG(shape)
+local function writeObjectSVG(shape)
 	-- Open a group
 	io.write('<g ')
 	-- Include all transforms
@@ -336,7 +336,7 @@ function writeObjectSVG(shape)
 end
 
 -- Write the SVG of scenegraph "source" into file named "target"
-function writeSceneSVG(source, target)
+local function writeSceneSVG(source, target)
 	if target then
 		io.output(io.open(target, 'w'))
 	else
@@ -365,7 +365,7 @@ end
 math.randomseed(os.time())
 
 -- define the main function
-function main()
+local function main()
 	-- TODO add a tag to lock reading from the folder and prevent
 	-- overwriting old with new files by working from highest number
 	local args = parser:parse()
