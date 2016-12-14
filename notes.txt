@@ -1,6 +1,0 @@
-libraries for producing SVG-compliant XML:
-genx.luaforge.net
-effectively streams it - start element, add attributes and content, end element.
-
-Alternately, etree.luaforge.net
-converts a table in one go rather than streaming
