@@ -65,10 +65,10 @@ end
 ---------------
 -------
 -- Circles
--- Primitive: Center at origin, radius 1.
+-- Primitive: Center at origin, radius 100.
 -- No ellipse primitive - emergent, just unevenly scale a circle.
 -------
-Circle = simpleclass({params = {cx = 0, cy = 0, r = 1},
+Circle = simpleclass({params = {cx = 0, cy = 0, r = 100},
 		getTransforms = lazyInit "getTransforms",
 		getChildren = lazyInit "getChildren"},
 		"RegPolygon")
@@ -84,7 +84,7 @@ function Circle.getanchortransform(centerodds)
 		return Translate:new(0, 0)
 	else
 		local angle = math.random() * math.pi * 2
-		return Translate:new{x = math.cos(angle), y = math.sin(angle)}
+		return Translate:new{x = math.cos(angle) * 100, y = math.sin(angle) * 100}
 	end
 end
 
@@ -94,18 +94,18 @@ end
 
 -------
 -- Line
--- Primitive: (0, 0) to (1, 0)
+-- Primitive: (0, 0) to (100, 0)
 -------
-Line = simpleclass({params = {x1 = 0, y1 = 0; x2 = 1, y2 = 0},
+Line = simpleclass({params = {x1 = 0, y1 = 0; x2 = 100, y2 = 0},
 		getTransforms = lazyInit "getTransforms",
 		getChildren = lazyInit "getChildren"},
 		"RegPolygon")
 
 -- Selects a random point on the line
--- Since everything is a transform from (1, 0), this is simple.
+-- Since everything is a transform from (100, 0), this is simple.
 -- Consumes one argument to keep a consistent interface, ignores it.
 function Line.getanchortransform(_)
-	return Translate:new{x = math.random(), y = 0}
+	return Translate:new{x = math.random() * 100, y = 0}
 end
 
 function Line:asSVGElement()
@@ -114,7 +114,7 @@ end
 
 -------
 -- RegPolygon
--- Points on a radius-1 circle
+-- Points on a radius-100 circle
 -- Anchors: Corners or center
 -- TODO extend to all-points-on-shape? Maybe, maybe not.
 -------
@@ -261,7 +261,6 @@ function writeSceneSVG(source, target)
 		io.output(io.stdout)
 	end
 	-- boilerplate start
-	-- TODO upscale all bases back at top
 	io.write('<svg version="1.1" width="1000" height="1000"',
 		        'viewBox="-500 -500 1000 1000"',
 		        'preserveAspectRatio="meet" >',
