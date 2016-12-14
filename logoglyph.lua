@@ -160,7 +160,7 @@ local Circle = simpleclass({params = {cx = 0, cy = 0, r = 100},
 -- centerodds/1 chance of selecting center (thus, configurable)
 -- Equal chance of any point on edge to any other point, if not center
 -- Returns a translation putting (0, 0) on selected point
-function Circle.getAnchorTransform(centerodds)
+function Circle:getAnchorTransform(centerodds)
 	if math.random() < centerodds then
 		return Translate:new{x = 0, y = 0}
 	else
@@ -185,7 +185,7 @@ local Line = simpleclass({params = {x1 = 0, y1 = 0; x2 = 100, y2 = 0},
 -- Selects a random point on the line
 -- Since everything is a transform from (100, 0), this is simple.
 -- Consumes one argument to keep a consistent interface, ignores it.
-function Line.getAnchorTransform(_)
+function Line:getAnchorTransform(_)
 	return Translate:new{x = math.random() * 100, y = 0}
 end
 
@@ -206,7 +206,7 @@ local RegPolygon = simpleclass({params = {sides = sides, x = 0, y = 0},
 
 -- Selects a random corner of the shape, or the center
 -- Equal chance of all corners, centerodds/1 chance of center
-function RegPolygon.getAnchorTransform(centerodds)
+function RegPolygon:getAnchorTransform(centerodds)
 	if math.random() < centerodds then
 		return Translate:new{0, 0}
 	else
@@ -283,11 +283,12 @@ end
 local function randShape(centerodds, othershape)
 	local shapes = {Circle, Line, RegPolygon}
 	local base = shapes[math.random(3)]:new({})
+	print(base.name)
 	table.insert(base:getTransforms(),
-			base.getAnchorTransform(centerodds))
+			base:getAnchorTransform(centerodds))
 	if othershape then
 		table.insert(base:getTransforms(),
-			othershape.getAnchorTransform(centerodds))
+			othershape:getAnchorTransform(centerodds))
 		table.insert(othershape:getChildren(), base)
 	end
 	return base
@@ -323,7 +324,9 @@ local function writeObjectSVG(shape)
 	io.write('<g ')
 	-- Include all transforms
 	for k, v in ipairs(shape:getTransforms()) do
-		io.write(v:asSVGAttribute())
+		if v then
+			io.write(v:asSVGAttribute())
+		end
 	end
 	io.write('>')
 	-- Include this specific object
