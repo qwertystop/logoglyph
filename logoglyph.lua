@@ -153,7 +153,7 @@ end
 local Circle = simpleclass({params = {cx = 0, cy = 0, r = 100},
 		getTransforms = lazyInit "getTransforms",
 		getChildren = lazyInit "getChildren"},
-		"RegPolygon")
+		"Circle")
 
 
 -- Selects a point from center or any point on edge
@@ -180,7 +180,7 @@ end
 local Line = simpleclass({params = {x1 = 0, y1 = 0; x2 = 100, y2 = 0},
 		getTransforms = lazyInit "getTransforms",
 		getChildren = lazyInit "getChildren"},
-		"RegPolygon")
+		"Line")
 
 -- Selects a random point on the line
 -- Since everything is a transform from (100, 0), this is simple.
