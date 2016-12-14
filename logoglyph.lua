@@ -60,7 +60,7 @@ parser:option "-q --quantity"
 	:convert(tonumber)
 	:description "How many images to draw?"
 
-parser:option "-s --more_shapes"
+parser:option "-s --moreshapes"
 	:convert(tonumber)
 	:description "Odds of adding another component shape after each addition (vs. stopping)  (0 <= m < 1)"
 
@@ -140,9 +140,9 @@ end
 -- All instances of a shape have the same base parameters,
 -- and are modified from there by transforms only.
 -- Anchors are used in shifting shapes to align
--- All shapes have a getanchortransform function, returning a random point on the edge
+-- All shapes have a getAnchorTransform function, returning a random point on the edge
 -- or in the center of the shape, in coordinates local to that shape's primitive.
--- If a shape is instantiated with params other than the default, getanchortransform
+-- If a shape is instantiated with params other than the default, getAnchorTransform
 -- may not align to the shape.
 ---------------
 -------
@@ -160,9 +160,9 @@ local Circle = simpleclass({params = {cx = 0, cy = 0, r = 100},
 -- centerodds/1 chance of selecting center (thus, configurable)
 -- Equal chance of any point on edge to any other point, if not center
 -- Returns a translation putting (0, 0) on selected point
-function Circle.getanchortransform(centerodds)
+function Circle.getAnchorTransform(centerodds)
 	if math.random() < centerodds then
-		return Translate:new(0, 0)
+		return Translate:new{x = 0, y = 0}
 	else
 		local angle = math.random() * math.pi * 2
 		return Translate:new{x = math.cos(angle) * 100, y = math.sin(angle) * 100}
@@ -185,7 +185,7 @@ local Line = simpleclass({params = {x1 = 0, y1 = 0; x2 = 100, y2 = 0},
 -- Selects a random point on the line
 -- Since everything is a transform from (100, 0), this is simple.
 -- Consumes one argument to keep a consistent interface, ignores it.
-function Line.getanchortransform(_)
+function Line.getAnchorTransform(_)
 	return Translate:new{x = math.random() * 100, y = 0}
 end
 
@@ -200,13 +200,13 @@ end
 -- TODO extend to all-points-on-shape? Maybe, maybe not.
 -------
 local RegPolygon = simpleclass({params = {sides = sides, x = 0, y = 0},
-		transforms = lazyInit "getTransforms",
+		getTransforms = lazyInit "getTransforms",
 		children = lazyInit "getChildren"},
 		"RegPolygon")
 
 -- Selects a random corner of the shape, or the center
 -- Equal chance of all corners, centerodds/1 chance of center
-function RegPolygon:getanchortransform(centerodds)
+function RegPolygon.getAnchorTransform(centerodds)
 	if math.random() < centerodds then
 		return Translate:new{0, 0}
 	else
@@ -282,12 +282,12 @@ end
 -- centerodds required, certain shapes use it
 local function randShape(centerodds, othershape)
 	local shapes = {Circle, Line, RegPolygon}
-	local base = shapes[math.random(3)]:new()
+	local base = shapes[math.random(3)]:new({})
 	table.insert(base:getTransforms(),
-			base:getanchortransform(centerodds))
+			base.getAnchorTransform(centerodds))
 	if othershape then
 		table.insert(base:getTransforms(),
-			othershape:getanchortransform(centerodds))
+			othershape.getAnchorTransform(centerodds))
 		table.insert(othershape:getChildren(), base)
 	end
 	return base
@@ -298,7 +298,7 @@ end
 
 -- 'moreshapes' = odds of adding another shape, (n / 1)
 -- 'centerodds' (see randShape)
--- and all parameters to randTransform (weights, continue, translatemax, scaleemax)
+-- and all parameters to randTransform (weights, continue, translatemax, scalemax)
 local function makeScenegraph(config)
 	-- Minimum two shapes
 	local shapes = {}
@@ -366,13 +366,24 @@ math.randomseed(os.time())
 
 -- define the main function
 local function main()
+	local args = parser:parse()
+	args.weights = {}
+	-- bundle it up more nicely for later passing
+	for k, v in pairs{"translate", "rotate", "scale", "skewx", "skewy"} do
+		args.weights[v] = args[v]
+		args[v] = nil
+	end
+
+	-- make directory if it doesn't exist
 	-- TODO add a tag to lock reading from the folder and prevent
 	-- overwriting old with new files by working from highest number
-	local args = parser:parse()
+	-- TODO base folder directly on args for organization
 	if not lfs.chdir(args.output) then
 		assert (lfs.mkdir(args.output), "Could not make or access target dir")
 		lfs.chdir(args.output)
 	end
+	
+	-- make all requested scenes
 	for i = 1, args.quantity do
 		local scene = makeScenegraph(args)
 		writeSceneSVG(scene, tostring(i) .. '.svg')
