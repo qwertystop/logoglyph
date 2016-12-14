@@ -20,7 +20,10 @@ local function simpleclass(class, typename)
 	class.__index = class
 	class.name = typename
 	class.is_a = function(self, askname) return self.name == askname end
-	class.new = function(self, obj) return setmetatable(obj, class) end
+	class.new = function(self, obj)
+		local obj = obj or {}
+		return setmetatable(obj, class)
+	end
 	return class
 end
 
