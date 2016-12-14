@@ -75,12 +75,11 @@ Circle = simpleclass({params = {cx = 0, cy = 0, r = 100},
 
 
 -- Selects a point from center or any point on edge
--- 1/centerodds chance of selecting center (thus, configurable)
+-- centerodds/1 chance of selecting center (thus, configurable)
 -- Equal chance of any point on edge to any other point, if not center
 -- Returns a translation putting (0, 0) on selected point
 function Circle.getanchortransform(centerodds)
-	local rand = math.random(centerodds)
-	if rand == 1 then
+	if math.random() < centerodds then
 		return Translate:new(0, 0)
 	else
 		local angle = math.random() * math.pi * 2
@@ -124,15 +123,14 @@ RegPolygon = simpleclass({params = {sides = sides, x = 0, y = 0},
 		"RegPolygon")
 
 -- Selects a random corner of the shape, or the center
--- Equal chance of all corners, 1/centerodds chance of center
+-- Equal chance of all corners, centerodds/1 chance of center
 function RegPolygon:getanchortransform(centerodds)
-	local rand = math.random(centerodds)
-	if rand == 1 then
+	if math.random() < centerodds then
 		return Translate:new{0, 0}
 	else
 		local angle = ((math.pi * 2) 
 			/ (math.random(self.params.sides) / self.params.sides))
-		return Translate:new{x = math.cos(angle), y = math.cos(angle)}
+		return Translate:new{x = math.cos(angle) * 100, y = math.sin(angle) * 100}
 	end
 end
 
