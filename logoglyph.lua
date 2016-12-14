@@ -25,18 +25,33 @@ end
 
 Translate = simpleclass({x = 0, y = 0}, "Translate")
 Translate.newRand = twoRandInit
+function Translate:asSVGAttribute()
+	return ('transform="translate(' .. self.x .. ',' .. self.y .. ')"')
+end
 
 Scale = simpleclass({x = 0, y = 0}, "Scale")
 Scale.newRand = twoRandInit
+function Scale:asSVGAttribute()
+	return ('transform="scale(' .. self.x .. ',' .. self.y .. ')"')
+end
 
 Rotate = simpleclass({ang = 0}, "Rotate") -- remember SVG uses degrees but Lua uses radians
 Rotate.newRand = randAngleInit
+function Rotate:asSVGAttribute()
+	return ('transform="rotate(' .. self.ang .. ')"')
+end
 
 SkewX = simpleclass({ang = 0}, "SkewX")
 SkewX.newRand = randAngleInit
+function SkewX:asSVGAttribute()
+	return ('transform="skewX(' .. self.ang .. ')"')
+end
 
 SkewY = simpleclass({ang = 0}, "SkewY")
 SkewY.newRand = randAngleInit
+function SkewY:asSVGAttribute()
+	return ('transform="skewY(' .. self.ang .. ')"')
+end
 
 ---------------
 -- Classes for primitive shapes
@@ -73,8 +88,8 @@ function Circle.getanchortransform(centerodds)
 	end
 end
 
-function Circle:writeShapeSVG()
-	-- TODO
+function Circle:asSVGElement()
+	return '<use xlink:href"#BaseCircle"/>'
 end
 
 -------
@@ -91,6 +106,10 @@ Line = simpleclass({params = {x1 = 0, y1 = 0; x2 = 1, y2 = 0},
 -- Consumes one argument to keep a consistent interface, ignores it.
 function Line.getanchortransform(_)
 	return Translate:new{x = math.random(), y = 0}
+end
+
+function Line:asSVGElement()
+	return '<use xlink:href"#BaseCircle"/>'
 end
 
 -------
@@ -116,6 +135,18 @@ function RegPolygon:getanchortransform(centerodds)
 		return Translate:new{x = math.cos(angle), y = math.cos(angle)}
 	end
 end
+
+function RegPolygon:asSVGElement()
+	local pointset = {}
+	for i = 0, (self.params.sides - 1) do
+		angle = (math.pi * 2) / (i / self.params.sides)
+		table.insert(pointset, tostring(math.cos(angle) * 100))
+		table.insert(pointset, tostring(math.sin(angle) * 100))
+	end
+	return table.concat({'<polygon fill="none" stroke="black" stroke-width="10" points="', 
+		table.concat(pointset, ' '), '"/>'}, '')
+end
+
 -------
 -- Polyline
 -- TODO get the main functionality working first
@@ -194,13 +225,32 @@ function makeScenegraph(config)
 		-- Add transforms to last shape
 		table.insert(shapes[#shapes]:getTransforms(),
 				randTransform(config.weights, config.continue,
-						config.translatemax, config.rotatemax))
+						config.translatemax, config.scalemax))
 		-- Pick a shape from the list to make the parent of the new shape
 		local parent = shapes[math.random(#shapes)]
 		table.insert(shapes, randShape(config.centerodds, parent))
 		-- repeat
-	until math.random() < more
+	until math.random() < config.moreshapes
 	return shapes[1] -- returning root of scene, not the whole list
+end
+
+-- Write an individual object as SVG - this function handles the generic parts
+-- (groups, transforms, children)
+function writeObjectSVG(shape)
+	-- Open a group
+	io.write('<g ')
+	-- Include all transforms
+	for k, v in ipairs(shape:getTransforms()) do
+		io.write(v:asSVGAttribute())
+	end
+	io.write('>')
+	-- Include this specific object
+	shape:asSVGElement()
+	-- This object's children, recursively 
+	for k, v in ipairs(self:getChildren()) do
+		writeObjectSVG(v)
+	end
+	io.write('</g>')
 end
 
 -- Write the SVG of scenegraph "source" into file named "target"
@@ -213,14 +263,16 @@ function writeSceneSVG(source, target)
 	-- boilerplate start
 	-- TODO upscale all bases back at top
 	io.write('<svg version="1.1" width="1000" height="1000"',
-		 '       viewBox="-500 -500 1000 1000"',
-		 '       preserveAspectRatio="meet">', '\n',
-		 '  <defs> \n',
-		 '    <circle id="BaseCircle" cx="0" cy="0" r="100"',
-		 '          fill="none" stroke="black" stroke-width="10" />')
-		 -- TODO other base shapes
+		        'viewBox="-500 -500 1000 1000"',
+		        'preserveAspectRatio="meet" >',
+		   '<defs>',
+		     '<g fill="none" stroke="black" stroke-width="10" >',
+		       '<circle id="BaseCircle" cx="0" cy="0" r="100" />',
+		       '<line id="BaseLine" x1="0" y1="0" x2="100" y2="0" />',
+		     '</g>',
+		   '</defs>')
 	-- write all shapes, depth-first through the tree, from the root
-	source:writeShapeSVG() -- TODO implement function for all shapes
+	writeObjectSVG(source)
 	io.write('</svg>')
 end
 
