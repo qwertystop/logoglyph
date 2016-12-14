@@ -212,9 +212,10 @@ end
 
 -- Create a full scenegraph (returns root).
 -- Pass a table containing configuration:
--- 'more' = odds of adding another shape, (n / 1)
+
+-- 'moreshapes' = odds of adding another shape, (n / 1)
 -- 'centerodds' (see randShape)
--- and all parameters to randTransform (weights, continue, translatemax, rotatemax)
+-- and all parameters to randTransform (weights, continue, translatemax, scaleemax)
 function makeScenegraph(config)
 	-- Minimum two shapes
 	local shapes = {}
