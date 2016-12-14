@@ -72,18 +72,14 @@ parser:option "-C --continue"
 	:convert(tonumber)
 	:description "Odds of adding another chained transformation after each addition (vs. stopping)  (0 <= m < 1)"
 
-parser:option "-w --weights"
-	:convert { -- this example has range 30, odds ranging 1/30 to 5/30.
-		translate = 1,
-		scale = 2,
-		rotate = 3,
-		skewx = 4,
-		skewy = 5
-	}
-	:description ("Likelihoods of applying each type of transformation "
-			.. "when one is added (integer values required). "
-			.. "Adds the given values to determine the range, "
-			.. "then selects from that range at random.")
+
+for key, val in pairs{"translate", "scale", "rotate", "skewx", "skewy"} do
+	parser:option("--" .. val)
+		:convert(tonumber)
+		:description("Likelihood of choosing this transformation "
+				.. "when applying a transformation, "
+				.. "relative to the other four.")
+end
 
 parser:option "-t --translatemax"
 	:convert(tonumber)
