@@ -1,14 +1,60 @@
 -- Logoglyph --
 -- v 0.1
-
--- Written in Lua 5.3, should be 5.1-compatible
-
+-- Written in Lua 5.3, should be 5.1-compatible (I don't think I've used anything new)
 -- Constructs small geometric patterns semirandomly, as SVG
+---------------
 
-local matrix = require "matrix"
+---------------
+-- Requirements
+---------------
+local lfs = require "lfs" -- luafilesystem
+local argparse = require "argparse"
 
--- Reset RNG
-math.randomseed(os.time())
+---------------
+-- Arguments
+---------------
+local parser = argparse()
+	:name "Logoglyph v0.1"
+	:description "Constructs small patterns randomly, as SVG, by repeated transformation of primitives"
+parser:option "-q --quantity"
+	:convert(tonumber)
+	:description "How many images to draw?"
+
+parser:option "-s --more_shapes"
+	:convert(tonumber)
+	:description "Odds of adding another component shape after each addition (vs. stopping)  (0 <= m < 1)"
+
+parser:option "-c --centerodds"
+	:convert(tonumber)
+	:description "Odds of anchoring a shape in the center of another (vs. an edge) (0 <= c <= 1)"
+
+parser:option "-C --continue"
+	:convert(tonumber)
+	:description "Odds of adding another chained transformation after each addition (vs. stopping)  (0 <= m < 1)"
+
+parser:option "-w --weights"
+	:convert { -- this example has range 30, odds ranging 1/30 to 5/30.
+		translate = 1,
+		scale = 2,
+		rotate = 3,
+		skewx = 4,
+		skewy = 5
+	}
+	:description ("Likelihoods of applying each type of transformation "
+			.. "when one is added (integer values required). "
+			.. "Adds the given values to determine the range, "
+			.. "then selects from that range at random.")
+
+parser:option "-t --translatemax"
+	:convert(tonumber)
+	:description "Maximum distance for one translation"
+
+parser:option "-r --scalemax"
+	:convert(tonumber)
+	:description "Maximum magnitude of scaling"
+
+parser:option "-o --output"
+	:description "Directory to write files to (default writes everything to stdout)"
 
 ---------------
 -- Classes for different transforms
@@ -310,3 +356,28 @@ function partial(f, arg)
 		return f(arg, ...)
 	end
 end
+
+-----------------
+-- Execution
+-----------------
+
+-- Seed RNG at start
+math.randomseed(os.time())
+
+-- define the main function
+function main()
+	-- TODO add a tag to lock reading from the folder and prevent
+	-- overwriting old with new files by working from highest number
+	local args = parser:parse()
+	if not lfs.chdir(args.output) then
+		assert (lfs.mkdir(args.output), "Could not make or access target dir")
+		lfs.chdir(args.output)
+	end
+	for i = 1, args.quantity do
+		local scene = makeScenegraph(args)
+		writeSceneSVG(scene, tostring(i) .. '.svg')
+	end
+end
+
+-- and BEGIN!
+main()
