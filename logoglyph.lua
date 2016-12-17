@@ -232,7 +232,7 @@ local RegPolygon = pl.class{
 
 	-- Selects a random corner of the shape, or the center
 	-- Equal chance of all corners, centerodds/1 chance of center
-	getAnchorTransform = function (centerodds)
+	getAnchorTransform = function (self, centerodds)
 		if math.random() < centerodds then
 			return Translate(0, 0)
 		else
@@ -245,8 +245,8 @@ local RegPolygon = pl.class{
 
 	 asSvgElement = function (self)
 		local pointset = {}
-		for i = 0, (self.params.sides - 1) do
-			angle = (math.pi * 2) / (i / self.params.sides)
+		for i = 0, (self.sides - 1) do
+			angle = (math.pi * 2) / (i / self.sides)
 			table.insert(pointset, tostring(math.cos(angle) * 100))
 			table.insert(pointset, tostring(math.sin(angle) * 100))
 		end
@@ -308,7 +308,6 @@ end
 local function randShape(centerodds, othershape)
 	local shapes = {Circle, Line, RegPolygon}
 	local base = shapes[math.random(3)]()
-	print(base._name)
 	base.transforms:append(base:getAnchorTransform(centerodds))
 	if othershape then
 		base.transforms:append(othershape:getAnchorTransform(centerodds))
@@ -326,7 +325,7 @@ end
 local function makeScenegraph(config)
 	-- Minimum two shapes
 	local shapes = pl.List.new()
-	table.insert(shapes, randShape(config.centerodds))
+	table.insert(shapes, randShape(config.centerodds, nil))
 	repeat
 		-- Add transforms to last shape
 		shapes[#shapes].transforms:extend(
