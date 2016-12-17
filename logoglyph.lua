@@ -219,7 +219,7 @@ local Line = pl.class{
 -- TODO anchor possibilities extend to all-points-on-shape? Maybe, maybe not.
 -------
 local RegPolygon = pl.class{
-	_name = "Line";
+	_name = "RegPolygon";
 
 	_base = Shape;
 	
