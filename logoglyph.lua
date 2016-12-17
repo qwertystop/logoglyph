@@ -73,7 +73,7 @@ local Translate = pl.class {
 	_base = TwoArgTransform;
 
 	asSvgAttribute = function (self)
-		return ('transform="translate(' .. self.x .. ',' .. self.y .. ')"')
+		return ('translate(' .. self.x .. ',' .. self.y .. ') ')
 	end
 }
 
@@ -83,7 +83,7 @@ local Scale = pl.class {
 	_base = TwoArgTransform;
 
 	asSvgAttribute = function (self)
-		return ('transform="scale(' .. self.x .. ',' .. self.y .. ')"')
+		return ('scale(' .. self.x .. ',' .. self.y .. ') ')
 	end
 }
 
@@ -105,7 +105,7 @@ local Rotate = pl.class {
 	_base = oneArgTransform;
 
 	asSvgAttribute = function (self)
-		return ('transform="rotate(' .. self.ang .. ')"')
+		return ('rotate(' .. self.ang .. ') ')
 	end
 }
 
@@ -115,7 +115,7 @@ local SkewX = pl.class {
 	_base = oneArgTransform;
 
 	asSvgAttribute = function (self)
-		return ('transform="skewX(' .. self.ang .. ')"')
+		return ('skewX(' .. self.ang .. ') ')
 	end
 }
 
@@ -125,7 +125,7 @@ local SkewY = pl.class {
 	_base = oneArgTransform;
 
 	asSvgAttribute = function (self)
-		return ('transform="skewY(' .. self.ang .. ')"')
+		return ('skewY(' .. self.ang .. ') ')
 	end
 }
 
@@ -345,8 +345,12 @@ local function writeObjectSvg(shape)
 	-- Open a group
 	io.write('<g ')
 	-- Include all transforms
-	for k, v in ipairs(shape.transforms) do
-		io.write(v:asSvgAttribute())
+	if #(shape.transforms) > 0 then
+		io.write('transform="')
+		for k, v in ipairs(shape.transforms) do
+			io.write(v:asSvgAttribute())
+		end
+		io.write('" ')
 	end
 	io.write('>')
 	-- Include specific given object...
@@ -366,15 +370,15 @@ local function writeSceneSvg(source, target)
 		io.output(io.stdout)
 	end
 	-- boilerplate start
-	io.write('<svg version="1.1" width="1000" height="1000"',
-		        'viewBox="-500 -500 1000 1000"',
-		        'preserveAspectRatio="meet" >',
-		   '<defs>',
-		     '<g fill="none" stroke="black" stroke-width="10" >',
-		       '<circle id="BaseCircle" cx="0" cy="0" r="100" />',
-		       '<line id="BaseLine" x1="0" y1="0" x2="100" y2="0" />',
-		     '</g>',
-		   '</defs>')
+	io.write('<svg version="1.1" width="1000" height="1000" \n',
+		 '       viewBox="-500 -500 1000 1000" \n',
+		 '       preserveAspectRatio="meet" > \n',
+		 '  <defs>\n',
+		 '    <g fill="none" stroke="black" stroke-width="10" >\n',
+		 '      <circle id="BaseCircle" cx="0" cy="0" r="100" />\n',
+		 '      <line id="BaseLine" x1="0" y1="0" x2="100" y2="0" />\n',
+		 '    </g>\n',
+		 '  </defs>\n')
 	-- write all shapes, depth-first through the tree, from the root
 	writeObjectSvg(source)
 	io.write('</svg>')
