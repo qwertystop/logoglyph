@@ -178,7 +178,7 @@ local Circle = pl.class{
 		end
 	end;
 
-	asSVGElement = function (self)
+	asSvgElement = function (self)
 		return '<use xlink:href"#BaseCircle"/>'
 	end;
 }
@@ -208,7 +208,7 @@ local Line = pl.class{
 		return Translate(math.random() * 100, 0)
 	end;
 
-	asSVGElement = function (self)
+	asSvgElement = function (self)
 		return '<use xlink:href"#BaseCircle"/>'
 	end;
 }
@@ -244,7 +244,7 @@ local RegPolygon = pl.class{
 		end
 	end;
 
-	 asSVGElement = function (self)
+	 asSvgElement = function (self)
 		local pointset = {}
 		for i = 0, (self.params.sides - 1) do
 			angle = (math.pi * 2) / (i / self.params.sides)
@@ -342,25 +342,25 @@ end
 
 -- Write an individual object as SVG - this function handles the generic parts
 -- (groups, transforms, children)
-local function writeObjectSVG(shape)
+local function writeObjectSvg(shape)
 	-- Open a group
 	io.write('<g ')
 	-- Include all transforms
 	for k, v in ipairs(shape.transforms) do
-		io.write(v:asSVGAttribute())
+		io.write(v:asSvgAttribute())
 	end
 	io.write('>')
 	-- Include specific given object...
-	shape:asSVGElement()
+	shape:asSvgElement()
 	-- ...and given object's children, recursively 
 	for k, v in ipairs(shape.children) do
-		writeObjectSVG(v)
+		writeObjectSvg(v)
 	end
 	io.write('</g>')
 end
 
 -- Write the SVG of scenegraph "source" into file named "target"
-local function writeSceneSVG(source, target)
+local function writeSceneSvg(source, target)
 	if target then
 		io.output(io.open(target, 'w'))
 	else
@@ -377,7 +377,7 @@ local function writeSceneSVG(source, target)
 		     '</g>',
 		   '</defs>')
 	-- write all shapes, depth-first through the tree, from the root
-	writeObjectSVG(source)
+	writeObjectSvg(source)
 	io.write('</svg>')
 end
 
@@ -428,7 +428,7 @@ local function main()
 				centerodds = tonumber(flags.centerodds),
 				moretransforms = tonumber(flags.moretransforms),
 				weights = weights}
-			writeSceneSVG(scene,
+			writeSceneSvg(scene,
 					pl.path.join(flags.output,
 							tostring(i) .. '.svg'))
 		end
