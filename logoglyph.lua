@@ -62,9 +62,8 @@ local TwoArgTransform = pl.class {
 	end;
 
 	newRand = function (self)
-			return self{
-				x = math.random() * 2 * 10 - 10,
-				y = math.random() * 2 * 10 - 10}
+			return self(math.random() * 2 * 10 - 10,
+					math.random() * 2 * 10 - 10)
 	end;
 }
 
@@ -96,7 +95,7 @@ local oneArgTransform = pl.class {
 	end;
 
 	newRand = function (self)
-		return self{ang = math.random() * 2 * math.pi}
+		return self(math.random() * 2 * math.pi)
 	end
 }
 
