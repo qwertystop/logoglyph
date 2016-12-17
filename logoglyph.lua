@@ -284,7 +284,7 @@ local function randTransform(weights, moretransforms)
 			skewx = SkewX,
 			skewy = SkewY} do
 		for i = 1, weights[key] do
-			funList:append(pl.func.bind1(val.newRand, val))
+			funList:append(val)
 		end
 	end
 
@@ -294,7 +294,7 @@ local function randTransform(weights, moretransforms)
 	local transformList = pl.List.new()
 	while math.random() < moretransforms do
 		local selection = math.random(weightsum)
-		transformList:append(funList[selection]())
+		transformList:append(funList[selection]:newRand())
 	end
 
 	return transformList
