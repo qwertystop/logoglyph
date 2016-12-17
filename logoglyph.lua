@@ -178,7 +178,7 @@ local Circle = pl.class{
 	end;
 
 	asSvgElement = function (self)
-		return '<use xlink:href"#BaseCircle"/>'
+		return '<circle cx="0" cy="0" r="100" />\n'
 	end;
 }
 
@@ -208,7 +208,7 @@ local Line = pl.class{
 	end;
 
 	asSvgElement = function (self)
-		return '<use xlink:href"#BaseCircle"/>'
+		return '<line x1="0" y1="0" x2="100" y2="0" />\n'
 	end;
 }
 
@@ -245,15 +245,15 @@ local RegPolygon = pl.class{
 
 	 asSvgElement = function (self)
 		local pointset = {}
-		for i = 0, (self.sides - 1) do
+		for i = 1, self.sides do
 			angle = (math.pi * 2) / (i / self.sides)
 			table.insert(pointset, tostring(math.cos(angle) * 100))
 			table.insert(pointset, tostring(math.sin(angle) * 100))
 		end
 		return table.concat({
-			'<polygon fill="none" stroke="black" stroke-width="10" points="', 
+			'<polygon points="', 
 			table.concat(pointset, ' '),
-			'"/>'
+			'" />\n'
 		}, '')
 	end
 }
@@ -351,14 +351,14 @@ local function writeObjectSvg(shape)
 		end
 		io.write('" ')
 	end
-	io.write('>')
+	io.write('>\n')
 	-- Include specific given object...
-	shape:asSvgElement()
+	io.write(shape:asSvgElement())
 	-- ...and given object's children, recursively 
 	for k, v in ipairs(shape.children) do
 		writeObjectSvg(v)
 	end
-	io.write('</g>')
+	io.write('</g>\n')
 end
 
 -- Write the SVG of scenegraph "source" into file named "target"
@@ -369,18 +369,17 @@ local function writeSceneSvg(source, target)
 		io.output(io.stdout)
 	end
 	-- boilerplate start
-	io.write('<svg version="1.1" width="1000" height="1000" \n',
-		 '       viewBox="-500 -500 1000 1000" \n',
-		 '       preserveAspectRatio="meet" > \n',
-		 '  <defs>\n',
-		 '    <g fill="none" stroke="black" stroke-width="10" >\n',
-		 '      <circle id="BaseCircle" cx="0" cy="0" r="100" />\n',
-		 '      <line id="BaseLine" x1="0" y1="0" x2="100" y2="0" />\n',
-		 '    </g>\n',
-		 '  </defs>\n')
+	local boilerplate = table.concat({
+		'<?xml version="1.0" encoding="UTF-8" standalone="no"?>',
+		'<svg version="1.1" width="1000" height="1000" ',
+		'\t\tviewBox="-500 -500 1000 1000" ',
+		'\t\tpreserveAspectRatio="meet" > ',
+		'\t\t<g style="fill:none;stroke:black;stroke-width:10;stroke-opacity:1" >',
+	}, '\n')
+	io.write(boilerplate)
 	-- write all shapes, depth-first through the tree, from the root
 	writeObjectSvg(source)
-	io.write('</svg>')
+	io.write('</g></svg>')
 end
 
 -----------------
