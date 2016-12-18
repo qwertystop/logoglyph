@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg version="1.1" width="1000" height="1000" 
+		viewBox="-500 -500 1000 1000" 
+		preserveAspectRatio="meet" > 
+		<g style="fill:none;stroke:black;stroke-width:10;stroke-opacity:1" ><g transform="translate(-52.705302514202,-84.983240035235) " >
+<circle cx="0" cy="0" r="100" />
+<g transform="translate(6.7734640557319,0) translate(-90.449361975256,42.648715317922) " >
+<line x1="0" y1="0" x2="100" y2="0" />
+<g transform="translate(0,0) translate(71.451825415716,0) " >
+<circle cx="0" cy="0" r="100" />
+</g>
+<g transform="translate(0,0) translate(42.225443944335,0) skewY(6.0508154462822) " >
+<polygon points="100.0 -7.3478807948841e-14 -100.0 3.6739403974421e-14 100.0 -2.4492935982947e-14" />
+</g>
+<g transform="translate(0,0) translate(40.041032526642,0) " >
+<polygon points="100.0 -1.9594348786358e-13 100.0 -9.7971743931788e-14 -50.0 -86.602540378444 100.0 -4.8985871965894e-14 -80.901699437495 -58.778525229247 -50.0 86.602540378444 62.348980185873 78.183148246803 100.0 -2.4492935982947e-14" />
+<g transform="translate(47.87713130936,0) translate(-50.0,86.602540378444) " >
+<line x1="0" y1="0" x2="100" y2="0" />
+</g>
+</g>
+</g>
+<g transform="translate(95.173979457468,0) translate(0,0) translate(-8.2872836105525,1.9975216779858) translate(2.755798753351,5.4622764978558) skewY(3.3775520795041) " >
+<line x1="0" y1="0" x2="100" y2="0" />
+<g transform="translate(49.947776086628,0) translate(19.495868077502,0) " >
+<line x1="0" y1="0" x2="100" y2="0" />
+</g>
+</g>
+</g>
+</g></svg>

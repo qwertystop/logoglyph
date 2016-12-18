@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg version="1.1" width="1000" height="1000" 
+		viewBox="-500 -500 1000 1000" 
+		preserveAspectRatio="meet" > 
+		<g style="fill:none;stroke:black;stroke-width:10;stroke-opacity:1" ><g transform="translate(0,0) rotate(2.4120515258907) " >
+<circle cx="0" cy="0" r="100" />
+<g transform="translate(0,0) translate(0,0) rotate(3.8246088112) translate(-8.2504657842219,5.4752278141677) skewY(1.3357381461925) " >
+<circle cx="0" cy="0" r="100" />
+<g transform="translate(32.029813667759,0) translate(92.97858236752,36.810096725304) rotate(6.0264800293229) scale(-4.9890329595655,-7.2827956452966) rotate(5.7520984556805) " >
+<line x1="0" y1="0" x2="100" y2="0" />
+<g transform="translate(-21.65166541749,97.627892452153) translate(21.57702925615,0) translate(8.4904516302049,-0.11145560070872) skewY(2.7444335384328) scale(-0.14374891296029,1.3358865957707) rotate(3.430418293297) " >
+<circle cx="0" cy="0" r="100" />
+</g>
+<g transform="translate(62.317733792588,0) translate(59.205196192488,0) " >
+<line x1="0" y1="0" x2="100" y2="0" />
+</g>
+</g>
+<g transform="translate(-93.601434374448,35.196185632053) translate(15.171352316849,98.842450742978) " >
+<circle cx="0" cy="0" r="100" />
+</g>
+</g>
+<g transform="translate(0,0) translate(0,0) translate(-0.43305341154337,-6.8927220627666) skewX(2.7402867069577) skewY(1.7112500558393) " >
+<circle cx="0" cy="0" r="100" />
+</g>
+</g>
+</g></svg>

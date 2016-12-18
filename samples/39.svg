@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg version="1.1" width="1000" height="1000" 
+		viewBox="-500 -500 1000 1000" 
+		preserveAspectRatio="meet" > 
+		<g style="fill:none;stroke:black;stroke-width:10;stroke-opacity:1" ><g transform="translate(70.542644422963,70.878313452109) translate(8.0583900585771,4.581949301064) translate(-9.770953701809,-0.77111169695854) " >
+<circle cx="0" cy="0" r="100" />
+<g transform="translate(71.89719020389,0) translate(-39.097285494278,-92.040220919872) " >
+<line x1="0" y1="0" x2="100" y2="0" />
+</g>
+</g>
+</g></svg>

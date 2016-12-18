@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg version="1.1" width="1000" height="1000" 
+		viewBox="-500 -500 1000 1000" 
+		preserveAspectRatio="meet" > 
+		<g style="fill:none;stroke:black;stroke-width:10;stroke-opacity:1" ><g transform="translate(0,0) skewX(0.39296757690548) rotate(5.3308543956203) scale(8.4953165147454,2.4312952067703) " >
+<polygon points="100.0 -1.7145055188063e-13 -100.0 8.5725275940315e-14 -50.0 86.602540378444 -4.2862637970157e-14 -100.0 -80.901699437495 58.778525229247 50.0 86.602540378444 100.0 -2.4492935982947e-14" />
+<g transform="translate(94.586390833514,32.456350212088) translate(-100.0,8.5725275940315e-14) " >
+<circle cx="0" cy="0" r="100" />
+</g>
+</g>
+</g></svg>

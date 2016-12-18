@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg version="1.1" width="1000" height="1000" 
+		viewBox="-500 -500 1000 1000" 
+		preserveAspectRatio="meet" > 
+		<g style="fill:none;stroke:black;stroke-width:10;stroke-opacity:1" ><g transform="translate(18.30149688758,0) rotate(5.5343920341913) " >
+<line x1="0" y1="0" x2="100" y2="0" />
+<g transform="translate(-60.8452048976,-79.359064012683) translate(55.850530182943,0) skewX(0.051143551682784) " >
+<circle cx="0" cy="0" r="100" />
+<g transform="translate(0,0) translate(-67.493558420743,73.787665444204) skewY(0.24643065120291) scale(-1.5770105645061,-3.2708516251296) rotate(4.8887034046339) scale(3.3454468753189,-3.7448580749333) " >
+<circle cx="0" cy="0" r="100" />
+<g transform="translate(0,0) translate(-56.995898701928,82.167314250617) " >
+<circle cx="0" cy="0" r="100" />
+</g>
+</g>
+</g>
+<g transform="translate(65.709914499894,0) translate(95.880735386163,0) scale(2.3650255054235,-2.7859789784998) " >
+<line x1="0" y1="0" x2="100" y2="0" />
+</g>
+<g transform="translate(10.706025315449,0) translate(8.717686124146,0) " >
+<line x1="0" y1="0" x2="100" y2="0" />
+</g>
+</g>
+</g></svg>

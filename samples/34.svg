@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg version="1.1" width="1000" height="1000" 
+		viewBox="-500 -500 1000 1000" 
+		preserveAspectRatio="meet" > 
+		<g style="fill:none;stroke:black;stroke-width:10;stroke-opacity:1" ><g transform="translate(23.61140740104,0) " >
+<line x1="0" y1="0" x2="100" y2="0" />
+<g transform="translate(41.06549792923,0) translate(65.697095822543,0) rotate(1.0684179610852) rotate(5.2795971137602) skewY(4.7302489601645) skewX(1.9221229265808) skewX(2.7539314082515) " >
+<line x1="0" y1="0" x2="100" y2="0" />
+</g>
+<g transform="translate(0,0) translate(99.027538625523,0) " >
+<circle cx="0" cy="0" r="100" />
+</g>
+</g>
+</g></svg>

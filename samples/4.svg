@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg version="1.1" width="1000" height="1000" 
+		viewBox="-500 -500 1000 1000" 
+		preserveAspectRatio="meet" > 
+		<g style="fill:none;stroke:black;stroke-width:10;stroke-opacity:1" ><g transform="translate(87.723489146349,48.00613973223) " >
+<circle cx="0" cy="0" r="100" />
+<g transform="translate(56.79774847813,0) translate(0,0) " >
+<line x1="0" y1="0" x2="100" y2="0" />
+</g>
+<g transform="translate(-95.863348374009,-28.464336256506) translate(0,0) skewY(5.5910276290398) skewX(6.2046992431314) " >
+<circle cx="0" cy="0" r="100" />
+<g transform="translate(91.106463083997,0) translate(99.301321698782,11.800318168383) " >
+<line x1="0" y1="0" x2="100" y2="0" />
+</g>
+</g>
+</g>
+</g></svg>

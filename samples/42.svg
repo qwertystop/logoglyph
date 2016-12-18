@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg version="1.1" width="1000" height="1000" 
+		viewBox="-500 -500 1000 1000" 
+		preserveAspectRatio="meet" > 
+		<g style="fill:none;stroke:black;stroke-width:10;stroke-opacity:1" ><g transform="translate(0,0) skewX(0.39072101457286) skewY(3.9758965253292) " >
+<circle cx="0" cy="0" r="100" />
+<g transform="translate(0,0) translate(17.738985362427,98.414066059236) rotate(3.5314545197814) rotate(4.4985266775099) translate(9.9050966370851,9.341460140422) scale(-3.6757585965097,-6.811098633334) " >
+<circle cx="0" cy="0" r="100" />
+<g transform="translate(0,0) translate(0,0) translate(-8.4547661058605,7.5037012901157) rotate(5.6797261954625) skewX(0.78900361277889) rotate(0.37015396340405) scale(-9.9734882358462,4.3217516038567) translate(4.226848250255,-3.709148587659) rotate(3.9631482914569) skewX(1.9324444660915) rotate(3.5501095779823) scale(-8.6073301173747,-3.3699239138514) translate(-4.480894850567,8.5514236520976) rotate(0.33391993150547) skewX(0.70407389490952) skewX(0.71240281125946) scale(2.7359635010362,7.3945564869791) skewX(4.7660263129263) scale(-0.31303023919463,-3.3672656305134) skewY(5.6338445348215) " >
+<circle cx="0" cy="0" r="100" />
+</g>
+<g transform="translate(100.0,-2.4492935982947e-14) translate(0,0) " >
+<polygon points="100.0 -2.4492935982947e-14" />
+</g>
+</g>
+</g>
+</g></svg>
