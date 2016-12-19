@@ -371,7 +371,7 @@ local function writeSceneSvg(source, target)
 	-- boilerplate start
 	local boilerplate = table.concat({
 		'<?xml version="1.0" encoding="UTF-8" standalone="no"?>',
-		'<svg version="1.1" width="1000" height="1000" ',
+		'<svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="1000" height="1000" ',
 		'\t\tviewBox="-500 -500 1000 1000" ',
 		'\t\tpreserveAspectRatio="meet" > ',
 		'\t\t<g style="fill:none;stroke:black;stroke-width:10;stroke-opacity:1" >',

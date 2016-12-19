@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<svg version="1.1" width="1000" height="1000" 
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="1000" height="1000" 
 		viewBox="-500 -500 1000 1000" 
 		preserveAspectRatio="meet" > 
 		<g style="fill:none;stroke:black;stroke-width:10;stroke-opacity:1" ><g transform="translate(0,0) skewY(1.1118948389517) " >
